@@ -37,6 +37,11 @@
     [_inAnimation setValue:ADTransitionAnimationInValue forKey:ADTransitionAnimationKey]; // See 'Core Animation Extensions To Key-Value Coding' : "while the key “someKey” is not a declared property of the CALayer class, however you can still set a value for the key “someKey” "
     _outAnimation.delegate = self;
     [_outAnimation setValue:ADTransitionAnimationOutValue forKey:ADTransitionAnimationKey];
+
+    // Make sure that the animation doesn't jump to the originating position right at the end.
+    // This avoids a flicker that is seen when the two overlapping views have transparent backgrounds.
+    _inAnimation.fillMode = _outAnimation.fillMode = kCAFillModeForwards;
+    _inAnimation.removedOnCompletion = _outAnimation.removedOnCompletion = NO;
 }
 
 - (ADTransition *)reverseTransition {
