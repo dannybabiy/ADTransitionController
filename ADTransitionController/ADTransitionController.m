@@ -413,10 +413,16 @@ NSString * ADTransitionControllerAssociationKey = @"ADTransitionControllerAssoci
 
 - (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item {
     _isNavigationBarTransitioning = NO;
+    if ([self.delegate respondsToSelector:@selector(transitionController:navigationBar:didPopItem:)]) {
+        [self.delegate transitionController:self navigationBar:navigationBar didPopItem:item];
+    }
 }
 
 -(void)navigationBar:(UINavigationBar *)navigationBar didPushItem:(UINavigationItem *)item {
     _isNavigationBarTransitioning = NO;
+    if ([self.delegate respondsToSelector:@selector(transitionController:navigationBar:didPushItem:)]) {
+        [self.delegate transitionController:self navigationBar:navigationBar didPushItem:item];
+    }
 }
 
 @end
