@@ -24,6 +24,7 @@ NSString * ADTransitionControllerAssociationKey = @"ADTransitionControllerAssoci
 
 #define AD_NAVIGATION_BAR_HEIGHT 44.0f
 #define AD_Z_DISTANCE 1000.0f
+#define TRANSITION_ANIMATION_KEY @"ADTransitionAnimation"
 
 @interface ADTransitionController (Private)
 - (void)_initialize;
@@ -338,10 +339,12 @@ NSString * ADTransitionControllerAssociationKey = @"ADTransitionControllerAssoci
         UIViewController * outViewController = [_viewControllers objectAtIndex:([_viewControllers count] - 2)];
         [outViewController.view removeFromSuperview];
         [outViewController endAppearanceTransition];
+        [outViewController.view.layer removeAnimationForKey:TRANSITION_ANIMATION_KEY];
     }
     UIViewController * inViewController = [_viewControllers lastObject];
     [inViewController endAppearanceTransition];
     [inViewController didMoveToParentViewController:self];
+    [inViewController.view.layer removeAnimationForKey:TRANSITION_ANIMATION_KEY];
     _isContainerViewTransitioning = NO;
     if ([self.delegate respondsToSelector:@selector(transitionController:didShowViewController:animated:)]) {
         [self.delegate transitionController:self didShowViewController:inViewController animated:animated];
@@ -444,11 +447,11 @@ NSString * ADTransitionControllerAssociationKey = @"ADTransitionControllerAssoci
         // (When pushing, viewIn.layer.transform == CATransform3DIdentity)
         _containerView.layer.transform = CATransform3DInvert(viewIn.layer.transform);
         
-        [_containerView.layer addAnimation:transformTransition.animation forKey:nil];
+        [_containerView.layer addAnimation:transformTransition.animation forKey:TRANSITION_ANIMATION_KEY];
     } else if ([transition isKindOfClass:[ADDualTransition class]]) { // ADDualTransition
         ADDualTransition * dualTransition = (ADDualTransition *)transition;
-        [viewIn.layer addAnimation:dualTransition.inAnimation forKey:nil];
-        [viewOut.layer addAnimation:dualTransition.outAnimation forKey:nil];
+        [viewIn.layer addAnimation:dualTransition.inAnimation forKey:TRANSITION_ANIMATION_KEY];
+        [viewOut.layer addAnimation:dualTransition.outAnimation forKey:TRANSITION_ANIMATION_KEY];
     } else if (transition != nil) {
         NSAssert(FALSE, @"Unhandled ADTransition subclass!");
     }

@@ -40,8 +40,10 @@
 
     // Make sure that the animation doesn't jump to the originating position right at the end.
     // This avoids a flicker that is seen when the two overlapping views have transparent backgrounds.
-    _inAnimation.fillMode = _outAnimation.fillMode = kCAFillModeForwards;
-    _inAnimation.removedOnCompletion = _outAnimation.removedOnCompletion = NO;
+    _inAnimation.fillMode = kCAFillModeForwards;
+    _outAnimation.fillMode = kCAFillModeForwards;
+    _inAnimation.removedOnCompletion = NO;
+    _outAnimation.removedOnCompletion = NO;
 }
 
 - (ADTransition *)reverseTransition {
