@@ -62,6 +62,7 @@
 @end
 
 @protocol ADTransitionControllerDelegate <NSObject>
+@optional
 - (void)transitionController:(ADTransitionController *)transitionController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)transitionController:(ADTransitionController *)transitionController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)transitionController:(ADTransitionController *)transitionController navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item;
